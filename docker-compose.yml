@@ -26,7 +26,7 @@ services:
         max-size: 10m
     networks:
       public: {}
-      private: {}
+      replication: {}
     environment:
       ZK_CLUSTER: zk1
       PUBLIC_URL: kafka1
@@ -41,6 +41,9 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    networks:
+      public: {}
+      replication: {}
     environment:
       ZK_CLUSTER: zk2
       PUBLIC_URL: kafka1
@@ -55,6 +58,9 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    networks:
+      public: {}
+      replication: {}
     environment:
       ZK_CLUSTER: zk3
       PUBLIC_URL: kafka1
