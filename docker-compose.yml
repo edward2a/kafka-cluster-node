@@ -1,0 +1,73 @@
+---
+version: '3.6'
+
+networks:
+  public: {}
+  replication: {}
+
+services:
+
+  zk1:
+    container_name: zk1
+    image: zookeeper
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      public: {}
+
+  kafka1:
+    container_name: kafka1
+    image: kafka-cluster-node
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      public: {}
+      private: {}
+    environment:
+      ZK_CLUSTER: zk1
+      PUBLIC_URL: kafka1
+      PUBLIC_IF: eth0
+      REPLICATION_IF: eth1
+      KAFKA_HEAP_OPTS: -Xms256M -Xmx256M
+
+  kafka2:
+    container_name: kafka2
+    image: kafka-cluster-node
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    environment:
+      ZK_CLUSTER: zk2
+      PUBLIC_URL: kafka1
+      PUBLIC_IF: eth0
+      REPLICATION_IF: eth1
+      KAFKA_HEAP_OPTS: -Xms256M -Xmx256M
+
+  kafka3:
+    container_name: kafka3
+    image: kafka-cluster-node
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    environment:
+      ZK_CLUSTER: zk3
+      PUBLIC_URL: kafka1
+      PUBLIC_IF: eth0
+      REPLICATION_IF: eth1
+      KAFKA_HEAP_OPTS: -Xms256M -Xmx256M
+
+  kafkalb:
+    container_name: kafkalb
+    image: haproxy:1.8-alpine
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    volumes:
+    - ./config/kafkalb.cfg:/usr/local/etc/haproxy/haproxy.cfg
