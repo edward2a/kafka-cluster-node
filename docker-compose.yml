@@ -16,10 +16,41 @@ services:
         max-size: 10m
     networks:
       public: {}
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+
+  zk2:
+    container_name: zk1
+    image: zookeeper
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      public: {}
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zk3:2888:3888
+
+  zk3:
+    container_name: zk1
+    image: zookeeper
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      public: {}
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=0.0.0.0:2888:3888
 
   kafka1:
     depends_on:
     - zk1
+    - zk2
+    - zk3
     container_name: kafka1
     image: kafka-cluster-node
     logging:
@@ -30,7 +61,7 @@ services:
       public: {}
       replication: {}
     environment:
-      ZK_CLUSTER: zk1:2181
+      ZK_CLUSTER: zk1:2181,zk2:2181,zk3:2181
       PUBLIC_IF: eth0
       REPLICATION_IF: eth1
       BROKER_ID: 1
@@ -39,6 +70,8 @@ services:
   kafka2:
     depends_on:
     - zk1
+    - zk2
+    - zk3
     container_name: kafka2
     image: kafka-cluster-node
     logging:
@@ -49,7 +82,7 @@ services:
       public: {}
       replication: {}
     environment:
-      ZK_CLUSTER: zk1:2181
+      ZK_CLUSTER: zk1:2181,zk2:2181,zk3:2181
       PUBLIC_IF: eth0
       REPLICATION_IF: eth1
       BROKER_ID: 2
@@ -58,6 +91,8 @@ services:
   kafka3:
     depends_on:
     - zk1
+    - zk2
+    - zk3
     container_name: kafka3
     image: kafka-cluster-node
     logging:
@@ -68,7 +103,7 @@ services:
       public: {}
       replication: {}
     environment:
-      ZK_CLUSTER: zk1:2181
+      ZK_CLUSTER: zk1:2181,zk2:2181,zk3:2181
       PUBLIC_IF: eth0
       REPLICATION_IF: eth1
       BROKER_ID: 3
