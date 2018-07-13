@@ -21,7 +21,7 @@ services:
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
 
   zk2:
-    container_name: zk1
+    container_name: zk2
     image: zookeeper
     logging:
       driver: json-file
@@ -34,7 +34,7 @@ services:
       ZOO_SERVERS: server.1=zk1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zk3:2888:3888
 
   zk3:
-    container_name: zk1
+    container_name: zk3
     image: zookeeper
     logging:
       driver: json-file
@@ -52,7 +52,7 @@ services:
     - zk2
     - zk3
     container_name: kafka1
-    image: kafka-cluster-node
+    image: edward2a/kafka-cluster-node
     logging:
       driver: json-file
       options:
@@ -73,7 +73,7 @@ services:
     - zk2
     - zk3
     container_name: kafka2
-    image: kafka-cluster-node
+    image: edward2a/kafka-cluster-node
     logging:
       driver: json-file
       options:
@@ -94,7 +94,7 @@ services:
     - zk2
     - zk3
     container_name: kafka3
-    image: kafka-cluster-node
+    image: edward2a/kafka-cluster-node
     logging:
       driver: json-file
       options:
