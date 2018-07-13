@@ -26,7 +26,7 @@ RUN chmod 755 /opt/kafka/bin/kafka-init.sh
 ENTRYPOINT /opt/kafka/bin/kafka-init.sh
 
 ENV PUBLIC_IF=eth0 \
-    REPLICATION_IF=9092 \
+    REPLICATION_IF=eth0 \
     KAFKA_HEAP_OPTS='-Xms384M -Xmx384M' \
     ZK_CLUSTER=127.0.0.1
 
