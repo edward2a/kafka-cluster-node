@@ -1,19 +1,19 @@
-FROM alpine:3.7
+FROM alpine:3.12
 
 LABEL description='Alpine/Kafka cluster node' \
       maintainer='edward2a@gmail.com'
 
-ARG KAFKA_VERSION=1.1.0
-ARG SCALA_VERSION=2.11
+ARG KAFKA_VERSION=2.5.0
+ARG SCALA_VERSION=2.13
 
 RUN apk update && \
-    apk add openjdk8-jre-base bash pcre-tools
+    apk add openjdk11-jre-headless bash pcre-tools
 
 RUN addgroup -S kafka && \
     adduser -S -D -G kafka kafka
 
 RUN wget http://mirrors.whoishostingthis.com/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
-    mkdir /opt && \
+    [ -d /opt ] || mkdir /opt && \
     tar -xf kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt && \
     ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /opt/kafka && \
     mkdir /opt/kafka/data_kafka
