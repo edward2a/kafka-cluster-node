@@ -24,8 +24,8 @@ RUN wget http://mirrors.whoishostingthis.com/apache/kafka/${KAFKA_VERSION}/kafka
     chmod 750 /opt/kafka/bin/*.sh && \
     chmod 770 /opt/kafka/config-var
 
-ADD --chown root:kafka config/broker.properties /opt/kafka/config/server.properties
-ADD --chown root:kafka scripts/container_init.sh /opt/kafka/bin/kafka-init.sh
+ADD --chown=root:kafka config/broker.properties /opt/kafka/config/server.properties
+ADD --chown=root:kafka scripts/container_init.sh /opt/kafka/bin/kafka-init.sh
 
 RUN chmod 750 /opt/kafka/bin/kafka-init.sh && \
     chmod 660 /opt/kafka/config/server.properties
