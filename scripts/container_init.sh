@@ -7,6 +7,7 @@ REPLICATION_IF=${REPLICATION_IF:-eth1}
 ZK_CLUSTER=${ZK_CLUSTER:-127.0.0.1:2181}
 KFK_CONFIG_SRC='/opt/kafka/config/server.properties'
 KFK_CONFIG='/opt/kafka/config-var/server.properties'
+KFK_JAAS_CONFIG='/opt/kafka/config/kafka_server_jaas.conf'
 
 
 function get_if_ip() {
@@ -38,6 +39,11 @@ function configure_kafka(){
 function start_kafka(){
 
     configure_kafka
+
+    # Load JAAS config if exists
+    if [ -f ${KFK_JAAS_CONFIG} ]; then
+        export KAFKA_OPTS="-Djava.security.auth.login.config=${KFK_JAAS_CONFIG}"
+    fi
 
     /opt/kafka/bin/kafka-server-start.sh ${KFK_CONFIG} &
     KFK_PID=$!
