@@ -5,7 +5,8 @@ set KFK_PID
 PUBLIC_IF=${PUBLIC_IF:-eth0}
 REPLICATION_IF=${REPLICATION_IF:-eth1}
 ZK_CLUSTER=${ZK_CLUSTER:-127.0.0.1:2181}
-KFK_CONFIG='/opt/kafka/config/server.properties'
+KFK_CONFIG_SRC='/opt/kafka/config/server.properties'
+KFK_CONFIG='/opt/kafka/config-var/server.properties'
 
 
 function get_if_ip() {
@@ -28,6 +29,7 @@ function configure_kafka(){
     PUBLIC_IP=$(get_if_ip ${PUBLIC_IF})
     REPLICATION_IP=$(get_if_ip ${REPLICATION_IF})
 
+    cp -v ${KFK_CONFIG_SRC} ${KFK_CONFIG}
     for token in PUBLIC_IP REPLICATION_IP ZK_CLUSTER BROKER_ID; do
         sed -i -e "s/%@${token}@%/${!token}/g" ${KFK_CONFIG}
     done
