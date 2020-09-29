@@ -15,6 +15,7 @@ RUN addgroup -S kafka && \
 RUN wget http://mirrors.whoishostingthis.com/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
     [ -d /opt ] || mkdir /opt && \
     tar -xf kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt && \
+    rm -f kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
     ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /opt/kafka && \
     mkdir /opt/kafka/data_kafka
 
