@@ -18,7 +18,7 @@ RUN wget http://mirrors.whoishostingthis.com/apache/kafka/${KAFKA_VERSION}/kafka
     rm -f kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
     ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /opt/kafka && \
     mkdir /opt/kafka/data_kafka /opt/kafka/config-var && \
-    chown -R root:kafka /opt/kafka && \
+    chown -R root:kafka /opt/kafka/ && \
     find /opt/kafka/ -type d -exec chmod 750 {} \+ && \
     find /opt/kafka/ -type f -exec chmod 640 {} \+ && \
     chmod 750 /opt/kafka/bin/*.sh && \
